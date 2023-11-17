@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "metrics-collector.fullname" . }}
+  labels:
+    {{- include "metrics-collector.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: "* * * * *"       
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ include "metrics-collector.fullname" . }}
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- include "metrics-collector.selectorLabels" . | nindent 12 }}
+        spec:
+          containers:
+          - name: {{ include "metrics-collector.fullname" . }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ["/bin/bash", "-c", "/opt/metrics-collector-scripts/collect.sh"]
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              seccompProfile:
+                type: RuntimeDefault
+            resources:
+              {{- toYaml .Values.resources | nindent 14 }}
+            env:
+              - name: STORAGE_ACCOUNT
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ include "metrics-collector.name" . }}-azure-blob-store
+                    key: storage_account
+              - name: STORAGE_CONTAINER
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ include "metrics-collector.name" . }}-azure-blob-store
+                    key: storage_container
+              - name: SAS_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ include "metrics-collector.name" . }}-azure-blob-store
+                    key: sas_token
+          restartPolicy: OnFailure
+          serviceAccount: {{ include "metrics-collector.serviceAccountName" . }}

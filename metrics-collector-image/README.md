@@ -1,1 +1,0 @@
-oc new-build https://github.com/adamclark/metrics-collector-image
