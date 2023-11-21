@@ -29,10 +29,6 @@ jq -rf ${FILTERS_DIR}/version-filter.jq ${DATE_CLUSTER}_version.json > ${DATE_CL
 jq -rf ${FILTERS_DIR}/pod-filter.jq ${DATE_CLUSTER}_pod.json > ${DATE_CLUSTER}_pod.csv
 
 # Upload the CSV files to Azure blob storage
-echo $STORAGE_ACCOUNT
-echo $STORAGE_CONTAINER
-echo $SAS_TOKEN
-
 for f in ${DATE_CLUSTER}_*.csv
 do
   echo curl -X PUT -T ./${f} -H \"x-ms-date: $(date -u)\" -H \"x-ms-blob-type: BlockBlob\" \"https://${STORAGE_ACCOUNT}.blob.core.windows.net/${STORAGE_CONTAINER}/${f}?${SAS_TOKEN}\"
