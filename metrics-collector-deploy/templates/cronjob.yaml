@@ -9,7 +9,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  schedule: "* * * * *"       
+  schedule: "{{ .Values.cronSchedule }}"
   jobTemplate:
     spec:
       template:
@@ -24,17 +24,11 @@ spec:
         spec:
           containers:
           - name: {{ include "metrics-collector.fullname" . }}
-            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             command: ["/bin/bash", "-c", "/opt/metrics-collector-scripts/collect.sh"]
             securityContext:
-              capabilities:
-                drop:
-                  - ALL
-              runAsNonRoot: true
-              allowPrivilegeEscalation: false
-              seccompProfile:
-                type: RuntimeDefault
+              {{- toYaml .Values.securityContext | nindent 14 }}
             resources:
               {{- toYaml .Values.resources | nindent 14 }}
             env:
