@@ -27,7 +27,8 @@ This shows how to build the image using an OpenShift build. The image could also
     stringData:
         storage_account: <storage_acct>
         storage_container: <container_name>
-        sas_token: <token>
+        storage_account_read_sas_token: <sas_token_to_read_container_sizes>
+        container_upload_sas_token: <sas_token_to_upload_results_files>
     ```
 
 1. To deploy the CronJob run:
