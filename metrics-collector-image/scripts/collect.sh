@@ -62,5 +62,5 @@ printf "%s\n" "${containerData[@]}" | paste -d ',' - - > "${DATE_CLUSTER}_storag
 
 for f in ${DATE_CLUSTER}_*.csv
 do
-  curl -X PUT -T ./${f} -H "x-ms-date: $(date -u)" -H "x-ms-blob-type: BlockBlob" "https://${STORAGE_ACCOUNT}.blob.core.windows.net/${STORAGE_CONTAINER}/${f}?${CONTAINER_UPLOAD_SAS_TOKEN}"
+  curl -X PUT -T ./${f} -H "x-ms-date: $(date -u)" -H "x-ms-blob-type: BlockBlob" "https://${STORAGE_ACCOUNT}.blob.core.windows.net/${RESULTS_STORAGE_CONTAINER}/${f}?${RESULTS_UPLOAD_SAS_TOKEN}"
 done

@@ -37,20 +37,20 @@ spec:
                   secretKeyRef:
                     name: {{ include "metrics-collector.name" . }}-azure-blob-store
                     key: storage_account
-              - name: STORAGE_CONTAINER
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ include "metrics-collector.name" . }}-azure-blob-store
-                    key: storage_container
               - name: STORAGE_ACCOUNT_READ_SAS_TOKEN
                 valueFrom:
                   secretKeyRef:
                     name: {{ include "metrics-collector.name" . }}-azure-blob-store
                     key: storage_account_read_sas_token
-              - name: CONTAINER_UPLOAD_SAS_TOKEN
+              - name: RESULTS_STORAGE_CONTAINER
                 valueFrom:
                   secretKeyRef:
                     name: {{ include "metrics-collector.name" . }}-azure-blob-store
-                    key: container_upload_sas_token
+                    key: results_storage_container
+              - name: RESULTS_UPLOAD_SAS_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ include "metrics-collector.name" . }}-azure-blob-store
+                    key: results_upload_sas_token
           restartPolicy: OnFailure
           serviceAccount: {{ include "metrics-collector.serviceAccountName" . }}
