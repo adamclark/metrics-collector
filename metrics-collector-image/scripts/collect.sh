@@ -48,10 +48,10 @@ while IFS= read -r container; do
         containerLength=$((containerLength + blob))
     done
     
-    ContainerSizeKB=$(echo "scale=2; $containerLength / 1024" | bc -l)
+    containerSizeKB=$(numfmt --to=iec --format "%.2f" $containerLength)
     
     # Add the container data to the array
-    containerData+=("ContainerName=$container" "ContainerSizeKB=$ContainerSizeKB")
+    containerData+=("ContainerName=$container" "ContainerSizeKB=$containerSizeKB")
 done < <(az storage container list --account-name $STORAGE_ACCOUNT --sas-token $STORAGE_ACCOUNT_READ_SAS_TOKEN --query '[].name' -o tsv)
 
 # Export the container data to a CSV file
