@@ -1,7 +1,10 @@
 #!/bin/bash
 
 WORKING_DIR=/tmp
+AZURE_CONFIG_DIR="${WORKING_DIR}/.azure"
+
 cd ${WORKING_DIR}
+
 
 # This is the date format required, including hours/mins while testing at increased frequency
 # DATE=$(date "+%Y-%m-%d")
