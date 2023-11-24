@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WORKING_DIR=/tmp
-AZURE_CONFIG_DIR="${WORKING_DIR}/.azure"
+export AZURE_CONFIG_DIR="${WORKING_DIR}/.azure"
 
 cd ${WORKING_DIR}
 
