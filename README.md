@@ -33,5 +33,5 @@ This shows how to build the image using an OpenShift build. The image could also
 
 1. To deploy the CronJob run:
     ```
-    helm template mycollector metrics-collector-deploy | oc apply -f -
+    helm upgrade --install mycollector metrics-collector-deploy
     ```

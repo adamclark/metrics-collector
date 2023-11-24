@@ -11,8 +11,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ include "metrics-collector.serviceAccountName" . }}
-  # TODO
-  namespace: metrics-collector
+  namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
